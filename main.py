@@ -47,13 +47,13 @@ for res in result1:
 
     result2 = execute_query(query2)
     
-    with open(f'{file_path}{res['arquivo_upload_nome']}.bin', 'rb') as file:
-    binary_data = file.read()
+    with open(f'{file_path}{res["arquivo_upload_nome"]}.bin', 'rb') as file:
+        binary_data = file.read()
 
     # bin to base64
     base64_data = base64.b64encode(binary_data).decode('utf-8')
 
-    file_extension = get_file_extension(f'{file_path}{res['arquivo_upload_nome']}.bin')
+    file_extension = get_file_extension(f'{file_path}{res["arquivo_upload_nome"]}.bin')
     # OR
     # file_extension = result2['arquivo_upload_extensao']
 
@@ -71,9 +71,9 @@ for res in result1:
     else:
         raise ValueError('Formato de arquivo não suportado.')
 
-    output_file = f'{file_path}{res['arquivo_upload_nome']}.{file_extension}'
+    output_file = f'{file_path}{res["arquivo_upload_nome"]}.{file_extension}'
     df.to_html(output_file, index=False)
 
     # .html to .file_extension
-    new_output_file = f'{file_path}{res['arquivo_upload_nome']}.{file_extension}'
+    new_output_file = f'{file_path}{res["arquivo_upload_nome"]}.{file_extension}'
     os.rename(output_file, new_output_file)
