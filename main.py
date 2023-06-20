@@ -20,10 +20,13 @@ def execute_query(query):
         # Execute query
         cursor.execute(query)
 
+        # Get the column names from the cursor object
+        column_names = cursor.column_names
+
         # get the results
         results = cursor.fetchall()
 
-        return results
+        return column_names, results
 
     except Exception as e:
         # Exception for error
@@ -38,13 +41,13 @@ file_path = 'FILE_PATH'
 # SQL Query
 query = "SELECT * FROM arquivo_upload"
 
-# Execute the query
-result1 = execute_query(query)
+# Execute the query and get column names and results
+column_names, result1 = execute_query(query)
 
 # Show the result
 for res in result1:
     # Convert the tuple to a dictionary
-    res_dict = dict(zip(result1.column_names, res))
+    res_dict = dict(zip(column_names, res))
 
     # Access the values by column name
     arquivo_upload_nome = res_dict['arquivo_upload_nome']
