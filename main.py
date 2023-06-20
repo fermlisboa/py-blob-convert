@@ -36,7 +36,7 @@ def execute_query(query):
 file_path = 'FILE_PATH'
 
 # SQL Query
-query = "SELECT * FROM arquivo_upload_binario"
+query = "SELECT * FROM arquivo_upload"
 
 # Execute the query
 result1 = execute_query(query)
