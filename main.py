@@ -43,17 +43,25 @@ result1 = execute_query(query)
 
 # Show the result
 for res in result1:
-    query2 = f"SELECT arquivo_upload_binario INTO DUMPFILE '{file_path}{res['arquivo_upload_nome']}.bin' FROM arquivo_upload WHERE arquivo_upload_id = {res['arquivo_upload_id']};"
+    # Convert the tuple to a dictionary
+    res_dict = dict(zip(result1.column_names, res))
+
+    # Access the values by column name
+    arquivo_upload_nome = res_dict['arquivo_upload_nome']
+    arquivo_upload_id = res_dict['arquivo_upload_id']
+
+
+    query2 = f"SELECT arquivo_upload_binario INTO DUMPFILE '{file_path}{arquivo_upload_nome}.bin' FROM arquivo_upload WHERE arquivo_upload_id = {arquivo_upload_id};"
 
     result2 = execute_query(query2)
     
-    with open(f'{file_path}{res["arquivo_upload_nome"]}.bin', 'rb') as file:
+    with open(f'{file_path}{arquivo_upload_nome}.bin', 'rb') as file:
         binary_data = file.read()
 
     # bin to base64
     base64_data = base64.b64encode(binary_data).decode('utf-8')
 
-    file_extension = get_file_extension(f'{file_path}{res["arquivo_upload_nome"]}.bin')
+    file_extension = get_file_extension(f'{file_path}{arquivo_upload_nome}.bin')
     # OR
     # file_extension = result2['arquivo_upload_extensao']
 
@@ -71,9 +79,9 @@ for res in result1:
     else:
         raise ValueError('Formato de arquivo não suportado.')
 
-    output_file = f'{file_path}{res["arquivo_upload_nome"]}.{file_extension}'
+    output_file = f'{file_path}{arquivo_upload_nome}.{file_extension}'
     df.to_html(output_file, index=False)
 
     # .html to .file_extension
-    new_output_file = f'{file_path}{res["arquivo_upload_nome"]}.{file_extension}'
+    new_output_file = f'{file_path}{arquivo_upload_nome}.{file_extension}'
     os.rename(output_file, new_output_file)
