@@ -7,10 +7,10 @@ def get_file_extension(file_name):
 def execute_query(query):
     # Connect to database
     connection = mysql.connector.connect(
-        host=os.getenv('MYSQL_HOST'),
-        user=os.getenv('MYSQL_USER'),
-        password=os.getenv('MYSQL_PASSWORD'),
-        database=os.getenv('MYSQL_DATABASE')
+        host='MYSQL_HOST',
+        user='MYSQL_USER',
+        password='MYSQL_PASSWORD',
+        database='MYSQL_DATABASE'
     )
 
     try:
@@ -33,7 +33,7 @@ def execute_query(query):
         # Close database connection
         connection.close()
 
-file_path = os.getenv('FILE_PATH')
+file_path = 'FILE_PATH'
 
 # SQL Query
 query = "SELECT * FROM arquivo_upload_binario"
