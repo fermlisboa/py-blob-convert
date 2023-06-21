@@ -1,6 +1,6 @@
 from pathlib import Path
 from PIL import Image
-from pdfdocument import PDFDocument
+from fpdf import FPDF
 from docx import Document
 import pandas as pd
 import base64
@@ -103,13 +103,17 @@ for res in result1:
 
             image.save(output_file)
         elif file_extension == 'pdf':
-            pdf = PDFDocument()
+            pdf = CustomPDF()
 
-            pdf.init_report()
+            pdf.add_page()
 
-            pdf.add_raw_page(binary_data)
+            pdf.set_font('Arial', size=12)
 
-            pdf.write(output_file)
+            text = binary_data.decode('utf-8')
+
+            pdf.cell(0, 10, text)
+
+            pdf.output(output_file)
         elif file_extension == 'ttf':
             with open(output_file, 'wb') as file:
                 file.write(binary_data)
