@@ -1,4 +1,7 @@
 from pathlib import Path
+from PIL import Image
+from pdfdocument import PDFDocument
+from docx import Document
 import pandas as pd
 import base64
 import os
@@ -76,30 +79,38 @@ for res in result1:
 
         file_extension = arquivo_upload_extensao
 
-        output_file = f'{file_path}{arquivo_nome}.{file_extension}'
+        output_file = f'{file_path}/{arquivo_nome}.{file_extension}'
 
         # Criar DataFrame a partir dos dados binários
         if file_extension == 'html':
             df = pd.DataFrame({'arquivo_html': [f'<iframe src="data:text/html;base64,{base64_data}"></iframe>']})
             df.to_html(output_file, index=False)
         elif file_extension == 'doc':
-            df = pd.DataFrame({'arquivo_html': [f'<iframe src="data:application/msword;base64,{base64_data}"></iframe>']})
-            df.to_csv(output_file, sep='\t', index=False, header=False)
+            doc = Document(binary_data)
+
+            doc.save(output_file)
         elif file_extension == 'png':
-            df = pd.DataFrame({'arquivo_html': [f'<img src="data:image/png;base64,{base64_data}">']})
-            df.to_csv(output_file, index=False, header=False)
+            image = Image.open(io.BytesIO(binary_data))
+
+            image.save(output_file)
         elif file_extension == 'jpg' or file_extension == 'jpeg':
-            df = pd.DataFrame({'arquivo_html': [f'<img src="data:image/jpeg;base64,{base64_data}">']})
-            df.to_csv(output_file, index=False, header=False)
+            image = Image.open(io.BytesIO(binary_data))
+
+            image.save(output_file)
         elif file_extension == 'pdf':
-            df = pd.DataFrame({'arquivo_html': [f'<embed src="data:application/pdf;base64,{base64_data}" type="application/pdf" width="100%" height="600px">']})
-            df.to_csv(output_file, index=False, header=False)
+            pdf = PDFDocument()
+
+            pdf.init_report()
+
+            pdf.add_raw_page(binary_data)
+
+            pdf.write(output_file)
         elif file_extension == 'ttf':
-            df = pd.DataFrame({'arquivo_html': [f'<style>@font-face{{font-family:"CustomFont";src:url(data:font/ttf;base64,{base64_data}) format("truetype");}}</style><div style="font-family:CustomFont">Texto com fonte personalizada</div>']})
-            df.to_csv(output_file, index=False, header=False)
+            with open(output_file, 'wb') as file:
+                file.write(binary_data)
         else:
             print(file_extension)
             raise ValueError('Formato de arquivo não suportado.')
 
-        new_output_file = f'{file_path}{arquivo_nome}.{file_extension}'
+        new_output_file = f'{file_path}/{arquivo_nome}.{file_extension}'
         os.rename(output_file, new_output_file)
