@@ -7,6 +7,7 @@ import base64
 import os
 import mysql.connector
 import uuid
+import io
 
 def get_file_extension(file_name):
     return file_name.split('.')[-1]
