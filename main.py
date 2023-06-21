@@ -6,6 +6,7 @@ import pandas as pd
 import base64
 import os
 import mysql.connector
+import uuid
 
 def get_file_extension(file_name):
     return file_name.split('.')[-1]
@@ -63,8 +64,11 @@ for res in result1:
     res_dict = dict(zip(column_names, res))
 
     # Acessar os valores pelo nome da coluna
-    arquivo_upload_nome = res_dict['arquivo_upload_nome']
-    arquivo_nome = arquivo_upload_nome.replace(" ", "")
+    if 'arquivo_upload_nome' in res_dict:
+        arquivo_upload_nome = res_dict['arquivo_upload_nome']
+        arquivo_nome = arquivo_upload_nome.replace(" ", "")
+    else:
+        arquivo_upload_nome = str(uuid.uuid4())
     arquivo_upload_id = res_dict['arquivo_upload_id']
     arquivo_upload_extensao = res_dict['arquivo_upload_extensao']
 

@@ -3,3 +3,4 @@ pdfdocument==4.0.0
 Pillow==9.5.0
 python-docx==0.8.11
 reportlab==4.0.4
+uuid==1.30
