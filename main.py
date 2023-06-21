@@ -37,6 +37,9 @@ def execute_query(query):
         connection.close()
 
 file_path = 'FILE_PATH'
+# Create directory if it doesn't exist
+if not os.path.exists(file_path):
+    os.makedirs(file_path)
 
 # SQL Query
 query = "SELECT * FROM arquivo_upload"
