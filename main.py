@@ -12,6 +12,13 @@ import io
 def get_file_extension(file_name):
     return file_name.split('.')[-1]
 
+class CustomPDF(FPDF):
+    def header(self):
+        pass
+
+    def footer(self):
+        pass
+
 def execute_query(query, fetch_results=True):
     # Conectar ao banco de dados
     connection = mysql.connector.connect(
