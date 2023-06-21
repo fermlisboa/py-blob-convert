@@ -76,28 +76,30 @@ for res in result1:
 
         file_extension = arquivo_upload_extensao
 
+        output_file = f'{file_path}{arquivo_nome}.{file_extension}'
+
         # Criar DataFrame a partir dos dados binários
         if file_extension == 'html':
             df = pd.DataFrame({'arquivo_html': [f'<iframe src="data:text/html;base64,{base64_data}"></iframe>']})
+            df.to_html(output_file, index=False)
         elif file_extension == 'doc':
-            df = pd.DataFrame(
-                {'arquivo_html': [f'<iframe src="data:application/msword;base64,{base64_data}"></iframe>']})
+            df = pd.DataFrame({'arquivo_html': [f'<iframe src="data:application/msword;base64,{base64_data}"></iframe>']})
+            df.to_csv(output_file, sep='\t', index=False, header=False)
         elif file_extension == 'png':
             df = pd.DataFrame({'arquivo_html': [f'<img src="data:image/png;base64,{base64_data}">']})
+            df.to_csv(output_file, index=False, header=False)
         elif file_extension == 'jpg' or file_extension == 'jpeg':
             df = pd.DataFrame({'arquivo_html': [f'<img src="data:image/jpeg;base64,{base64_data}">']})
+            df.to_csv(output_file, index=False, header=False)
         elif file_extension == 'pdf':
-            df = pd.DataFrame({'arquivo_html': [
-                f'<embed src="data:application/pdf;base64,{base64_data}" type="application/pdf" width="100%" height="600px">']})
+            df = pd.DataFrame({'arquivo_html': [f'<embed src="data:application/pdf;base64,{base64_data}" type="application/pdf" width="100%" height="600px">']})
+            df.to_csv(output_file, index=False, header=False)
         elif file_extension == 'ttf':
             df = pd.DataFrame({'arquivo_html': [f'<style>@font-face{{font-family:"CustomFont";src:url(data:font/ttf;base64,{base64_data}) format("truetype");}}</style><div style="font-family:CustomFont">Texto com fonte personalizada</div>']})
+            df.to_csv(output_file, index=False, header=False)
         else:
             print(file_extension)
             raise ValueError('Formato de arquivo não suportado.')
 
-        output_file = f'{file_path}{arquivo_nome}.{file_extension}'
-        df.to_html(output_file, index=False)
-
-        # .html para .file_extension
         new_output_file = f'{file_path}{arquivo_nome}.{file_extension}'
         os.rename(output_file, new_output_file)
