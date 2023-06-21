@@ -36,7 +36,8 @@ def execute_query(query):
         # Close database connection
         connection.close()
 
-file_path = 'FILE_PATH'
+file_path = Path(os.path.abspath('upload/'))
+file_path = file_path.as_posix()
 # Create directory if it doesn't exist
 if not os.path.exists(file_path):
     os.makedirs(file_path)
