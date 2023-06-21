@@ -111,16 +111,12 @@ for res in result1:
             image.save(output_file)
         elif file_extension == 'pdf':
             pdf = CustomPDF()
-
             pdf.add_page()
-
             pdf.set_font('Arial', size=12)
-
             text = binary_data.decode('utf-8')
-
             pdf.cell(0, 10, text)
-
-            pdf.output(output_file)
+            with open(output_file, 'wb') as file:
+                pdf.output(dest=file)
         elif file_extension == 'ttf':
             with open(output_file, 'wb') as file:
                 file.write(binary_data)
